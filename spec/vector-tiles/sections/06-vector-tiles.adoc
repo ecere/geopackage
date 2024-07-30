@@ -1,0 +1,146 @@
+[[VectorTilesClause]]
+== Vector Tiles
+
+[[VectorTilesRequirementClass]]
+=== Vector Tiles Requirements
+
+==== Introduction
+
+These requirements define how to encode tiled feature data (commonly known as _vector tiles_) in a GeoPackage data store.
+
+For vector tilesets, all of the http://www.geopackage.org/guidance/getting-started.html#tiles[Tiles Option] applies.
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/rbt/vector-tiles
+description:: For defining how vector tiles are encoded
+part:: Vector tilesets SHALL be stored in a GeoPackage with individual tiles stored in the `tile_data` blob of a tile pyramid user data table.
+part:: The `data_type` of a vector tileset entry in the `gpkg_contents` table SHALL be `vector-tiles`.
+part:: The Coordinate Reference System (SRS) specified for a vector tileset in the `gpkg_spatial_ref_sys` (see clause 1.1.2 in the core GeoPackage standard) SHALL be https://docs.ogc.org/is/17-083r4/17-083r4.html#toc15[compatible (see 2DTMS _6.2.1.1. TileMatrixSet CRS Compatibility_)] with the Coordinate Reference System of the 2D Tile Matrix Set definition for that tileset.
+====
+
+.Example SQL statement for creating a user-defined table storing vector tiles
+[source,sql]
+----
+CREATE TABLE tiles_physical(
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   zoom_level INTEGER NOT NULL,
+   tile_column INTEGER NOT NULL,
+   tile_row INTEGER NOT NULL,
+   tile_data BLOB NOT NULL,
+   UNIQUE (zoom_level, tile_column, tile_row)
+)
+----
+
+See <<compusult-gpkg_tiles>> for an implementation example of a user-defined vector tiles table.
+
+There are two additional required metadata tables for vector tiles, `gpkgext_vt_layers` and `gpkgext_vt_fields`, that mirror the https://github.com/mapbox/mbtiles-spec/blob/master/1.3/spec.md#vector_layers[vector_layers key from the JSON object from the metadata from MBTiles].
+This allows client software to understand the feature schemas without having to open individual tiles.
+As with other GeoPackage tables, this extension takes no position on how either of these tables are to be used by a client.
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/rbt/vector-tiles-layers
+description:: For describing the layers contained in vector tilesets
+part:: GeoPackage containing vector tiles SHALL include a `gpkgext_vt_layers` table describing the layers in a vector tile set. The columns in this table are:
+* `id`, the primary key
+* `table_name`, which matches the entry in `gpkg_contents`
+* `name`, the layer name
+* `description`, an optional text description
+* `minzoom` and `maxzoom`, the optional integer minimum and maximum zoom levels
+* `attributes_table_name`, the optional name of an attributes table containing the attributes (when encoding attributes into a separate attributes tables rather than embedding them in the vector tiles -- should be NULL for this RBT extension)
+* `geometry_dimension`, the dimension of the geometry found in the layer (NULL: unknown/mixed, 0: Point/MultiPoint, 1: LineString/MultiLineString, 2: Polygon/MultiPolygon)
+====
+
+.Example SQL statement for creating the `gpkgext_vt_layers` table
+[source,sql]
+----
+CREATE TABLE gpkgext_vt_layers (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   table_name TEXT NOT NULL REFERENCES gpkg_contents (table_name),
+   name TEXT NOT NULL,
+   description TEXT,
+   minzoom INTEGER,
+   maxzoom INTEGER,
+   attributes_table_name TEXT,
+   geometry_dimension INTEGER
+)
+----
+
+See <<compusult-gpkgext_vt_layers>> for an implementation example of the `gpkgext_vt_layers` table.
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/rbt/vector-tiles-fields
+description:: For describing the fields contained in vector tilesets
+part:: GeoPackage containing vector tiles SHALL include a `gpkgext_vt_fields` table describing the fields (attributes) for a tiled feature data layer. The columns in this table are:
+* `id`, the primary key
+* `layer_id`, a foreign key to `id` in `gpkgext_vt_layers`
+* `name`, the field name
+* `type`, either "String", "Number", or "Boolean"
+====
+
+.Example SQL statement for creating the `gpkgext_vt_fields` table
+[source,sql]
+----
+CREATE TABLE gpkgext_vt_fields (
+   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+   layer_id INTEGER REFERENCES gpkgext_vt_layers,
+   name TEXT NOT NULL,
+   type TEXT
+)
+----
+
+See <<compusult-gpkgext_vt_fields>> for an implementation example of the `gpkgext_vt_fields` table.
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/rbt/content-types
+description:: For specifying the media types and content encoding of user data tables
+part:: The GeoPackage SHALL include a `gpkgext_content_types` table identifying the media type containing the following columns:
+* `content_id`, a foreign key to the corresponding entry in the `gpkg_contents`
+* `media_type`, text indicating a media type used in the `tile_data` blobs of the corresponding tile pyramid user data table (e.g., `image/png` or `application/vnd.mapbox-vector-tile`)
+* `encoding`, the https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Encoding[content encoding] (e.g., `deflate` or `gzip` compression), _NULL_ if no additional encoding is used for the same `tile_data` blobs
+====
+
+.Example SQL statement for creating the `gpkgext_content_types` table
+[source,sql]
+----
+CREATE TABLE gpkgext_content_types (
+   content_id INTEGER REFERENCES gpkg_contents,
+   media_type TEXT,
+   encoding TEXT
+)
+----
+
+NOTE: Multiple entries for the same `content_id` indicate that multiple data media types can be found in the corresponding tiles table (e.g., JPEG and PNG).
+
+[[MapboxVectorTilesRequirementClass]]
+=== Mapbox Vector Tiles Encoding Requirements
+
+These requirements define how to encode vector tiles in a GeoPackage data store using the https://github.com/mapbox/vector-tile-spec/tree/master/2.1[Mapbox Vector Tiles (MVT) specification version 2.1],
+based on https://github.com/google/protobuf[Google Protocol Buffers] for encoding the data of each tile.
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/rbt/mapbox-vector-tiles
+description:: For describing how tiles are encoded using Mapbox Vector Tiles
+part:: Tilesets encoded using Mapbox Vector Tiles SHALL be stored as blobs in the `tile_data` fields of http://www.geopackage.org/guidance/getting-started.html#user-data-tables[user-defined tiles tables].
+part:: The `tile_data` blobs SHALL be encoded Google Protocol Buffers (PBF) using the schema https://github.com/mapbox/vector-tile-spec/blob/master/2.1/vector_tile.proto[defined for MVT].
+part:: If an encoding such as `gzip` or `deflate` is specified in the `gpkgext_content_types` table, the PBF blob SHALL have this additional encoding applied.
+====
+
+[recommendation]
+====
+[%metadata]
+identifier:: /rec/rbt/mvt-id
+description:: For specifying a unique feature ID
+part:: Features contained in Mapbox Vector Tiles contained in a GeoPackage vector tileset SHOULD make use of the MVT `id` field to store a persistent numeric identifier
+uniquely identifying a particular feature of the parent layer. This enables client to recognize features across tile boundaries (for example, to reconstruct the original features)
+without resorting to attribute comparison, which might not be accurate.
+====
