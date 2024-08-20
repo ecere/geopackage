@@ -30,7 +30,7 @@
 :comment: ### Comma delimited keywords; mandatory
 :keywords: ogcdoc, OGC document, GeoPackage, Styling, Portrayal, Symbology, SLD, SE, CartoSym
 :comment: ### Semicolon-delimited list of the submitting organizations; mandatory
-:submitting-organizations: US Army Geospatial Center (AGC); Ecere Corporation; Compusult Limited; TechMaven Geospatial
+:submitting-organizations: US Army Geospatial Center (AGC); Ecere Corporation; Compusult Limited; TechMaven Geospatial; Image Matters, LLC.
 :comment: ### Metanorma flavor; mandatory
 :mn-document-class: ogc
 :comment: ### Desired output formats; mandatory
