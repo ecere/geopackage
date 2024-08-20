@@ -87,10 +87,10 @@ Submitting organisations added automatically by Metanorma from document attribut
 The following individuals submitted this candidate standard to the OGC:
 
 |===
-|Name                               |Affiliation                   |OGC member
-|Jérôme Jacovella-St-Louis (editor) | Ecere Corporation            | Yes
-|Jeff Yutzler (editor)              | Image Matters LLC.           | Yes
-|Adam Parsons                       | Compusult Limited            | Yes
-|Jordan Bess                        | Tech Maven Geospatial        | Yes
-|Jeff Harrison                      | U.S. Army Geospatial Center  | Yes
+|Name                               |Affiliation
+|Jérôme Jacovella-St-Louis (editor) | Ecere Corporation
+|Jeff Yutzler (editor)              | Image Matters LLC.
+|Adam Parsons                       | Compusult Limited
+|Jordan Bess                        | Tech Maven Geospatial
+|Jeff Harrison                      | U.S. Army Geospatial Center
 |===
