@@ -1,4 +1,4 @@
-= Styling GeoPackage Extension
+= GeoPackage Extension for Semantic Annotations
 :comment: ### Document type; mandatory. Visit: https://www.metanorma.org/author/ogc/authoring/ for permitted types
 :doctype: standard
 :comment: ### Document subtype; optional. Visit: https://www.metanorma.org/author/ogc/authoring/ for permitted types
@@ -12,7 +12,7 @@
 :comment: ### Relevant committee; mandatory. The permitted types are: technical, planning, and strategic-member-advisory
 :committee: technical
 :comment: ### Internal reference number; mandatory
-:docnumber: 24-CCC
+:docnumber: 24-049
 :comment: ### Date on which the standard was updated; mandatory
 :received-date: 2024-09-01
 :comment: ### Date on which the standard was approved by the issuing authority; mandatory
@@ -20,7 +20,7 @@
 :comment: ### Date on which the standard was published; mandatory
 :published-date: 2024-10-14
 :comment: ### External link referencing the document; optional. If not provided, a default value is created following this structure: "http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}",
-:external-id: http://www.opengis.net/IS/GPKG-Styling/1.0
+:external-id: http://www.opengis.net/IS/GPKG-SemanticAnnotations/1.0
 :comment: ### Author one
 :fullname: Jérôme Jacovella-St-Louis
 :comment: ### Author two
@@ -28,7 +28,7 @@
 :comment: ### Role of the authors; mandatory
 :role: editor
 :comment: ### Comma delimited keywords; mandatory
-:keywords: ogcdoc, OGC document, GeoPackage, Styling, Portrayal, Symbology, SLD, SE, CartoSym
+:keywords: ogcdoc, OGC document, GeoPackage, Semantic Annotations, GeoDataClass, Associations
 :comment: ### Semicolon-delimited list of the submitting organizations; mandatory
 :submitting-organizations: US Army Geospatial Center (AGC); Ecere Corporation; Compusult Limited; TechMaven Geospatial; Image Matters, LLC.
 :comment: ### Metanorma flavor; mandatory
@@ -38,9 +38,9 @@
 :comment: ### Enable local relaton cache for quick inclusion of prefetched references; optional. For further information, visit: https://www.metanorma.org/author/ref/document-attributes/#caches, https://www.metanorma.org/author/topics/building/reference-lookup/#lookup-result-caching
 :local-cache-only:
 :comment: ### URI to which the PDF version of this standard is published; optional
-:pdf-uri: ./24-CCC.pdf
+:pdf-uri: ./24-049.pdf
 :comment: ### URI to which the XML version of this standard is published; optional
-:xml-uri: ./24-CCC.xml
+:xml-uri: ./24-049.xml
 :comment: ### Directory name used as prefix for the location of image files; optional
 :imagesdir: images
 :comment: ### Enable rendering of AsciiMath, MathML, and LaTeX ("latexmath" needs to be indicated in the code to use LaTeX, or set ":stem: latexmath" to interpret by default); optional
@@ -57,11 +57,11 @@ include::sections/03-references.adoc[]
 
 include::sections/04-terms_and_definitions.adoc[]
 
-// include::sections/unsued-conventions.adoc[]
+// include::sections/unused-conventions.adoc[]
 
 include::sections/05-overview.adoc[]
 
-include::sections/06-styling.adoc[]
+include::sections/06-semantic-annotations.adoc[]
 
 // Annexes
 include::sections/aa-ats.adoc[]
