@@ -264,6 +264,7 @@ which can be mapped to an attributes table, as well as the ability to mark artif
 
 NOTE: A client that does not understand or care about artificial segments information will simply skip over it with the feature table offsets.
 
+////
 
 [[GeoJSONEncodingRequirementClass]]
 === GeoJSON Encoding Requirements
@@ -272,7 +273,7 @@ These requirements define how to encode vector tiles in a GeoPackage data store 
 
 The content of the vector tiles SHALL be feature collections encoded as GeoJSON.
 
-////
+
 REVIEW: Extension definition
 
 ==== Extension Title

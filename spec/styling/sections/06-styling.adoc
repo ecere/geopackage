@@ -196,7 +196,22 @@ CREATE TABLE gpkgext_fonts(
 
 See <<compusult-gpkgext_fonts>> for an implementation example of the `gpkgext_fonts` table.
 
-[[MapboxGLStyleClause]]
+[[CartoSymCSSStyleClause]]
+=== CartoSym-CSS Style Encoding Requirements
+
+These requirements define how to include style sheets specified using the https://docs.ogc.org/DRAFTS/18-067r4.html#rc-cscss[CartoSym-CSS style encoding] within a GeoPackage.
+
+[[CartoSymJSONStyleClause]]
+=== CartoSym-JSON Style Encoding Requirements
+
+These requirements define how to include style sheets specified using the https://docs.ogc.org/DRAFTS/18-067r4.html#rc-json[CartoSym-JSON style encoding] within a GeoPackage.
+
+[[SLDSEStyleClause]]
+=== SLD/SE Style Encoding Requirements
+
+These requirements define how to include style sheets specified using the https://www.ogc.org/standard/sld/[Stylable Layer Descriptior] / https://www.ogc.org/standard/se/[Symbology Encoding] (SLD/SE) style encoding within a GeoPackage.
+
+[[CartoSymJSONLStyleClause]]
 === Mapbox GL Styling Specification Requirements
 
 These requirements define how to include style sheets specified in the https://docs.mapbox.com/style-spec[Mapbox GL Styling Specification] within a GeoPackage.
