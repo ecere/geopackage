@@ -235,7 +235,8 @@ https://portal.ogc.org/files/?artifact_id=25355[OGC Simple Feature Access] Secti
 non-tiled vector data in GeoPackage feature tables. This extension allows to encode the geometry of multiple features in a single blob, while including an identifier
 which can be mapped to an attributes table, as well as the ability to mark artificial segments.
 
-.WKB Collection Layout
+.WKB Collection
+[[wkb-collection]]
 [options="header"]
 |===
 | Field | Type | Size
@@ -243,26 +244,55 @@ which can be mapped to an attributes table, as well as the ability to mark artif
 | Coordinate Type | 1: Z, 2: M (bits) | 1 byte
 | Geometry Type | 1: (multi)point, 2: (multi)linestring, 3: (multi)polygon | 2 bytes
 | Feature Count | uint32 | 4 bytes
-| **Feature Table** (one entry per feature) |  |
-| Feature ID | uint64    | 8 bytes
-| Offset from start | uint64    | 8 bytes
-| **# Features with artificial segments** | uint32 | 4 bytes
-| **Artificial Segments Table** (for each feature with artificial segment) |  |
-| # Artificial segments | uint32 | 4 bytes
-| (Multi)Polygon: _**For Each artificial segment**_ |  |
+| Feature lookup table  | <<feature-lookup-table>> |
+| Table of geometry and optional artificial segments information  | <<geometry-table>> |
+|===
+
+.Feature lookup table
+[[feature-lookup-table]]
+[options="header"]
+|===
+| Field | Type | Size
+| Feature ID                                    | uint64    | 8 bytes
+| Offset to WKB geometry from start of WKB Collection | uint64    | 8 bytes
+|===
+
+.Table of geometry and optional artificial segments information
+[[geometry-table]]
+[options="header"]
+|===
+| Field | Type | Size
+| Encoded WKB geometry for this feature | https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary[Well-known binary] (https://portal.ogc.org/files/?artifact_id=25355[Simple Feature Access] / Section 8)|
+| Count of (Multi)Polygon/LineString artificial segments/points information entries for this feature | uint32 | 4 bytes
+| (Multi)Polygon/LineString artificial segments/points information for this feature | <<linestring-artificial>> or <<polygon-artificial>> |
+|===
+
+[NOTE]
+====
+A client that does not understand or care about artificial segments information will simply skip over it with the feature table offsets.
+====
+
+.(Multi)Polygon artificial segments information
+[[polygon-artificial]]
+[options="header"]
+|===
+| Field | Type | Size
 | Polygon index | uint32 | 4 bytes
 | Contour index | uint32 | 4 bytes
 | Artificial **_From_** Point index | uint32 | 4 bytes
 | Artificial **_To_** Point index | uint32 | 4 bytes
-| (Multi)LineString : _**For Each artificial segment**_ |  |
-| LineString index | uint32 | 4 bytes
-| Artificial **_From_** Point index | uint32 | 4 bytes
-| Artificial **_To_** Point index | uint32 | 4 bytes
-| **Feature Geometry** (for each feature) |  |
-| Encoded geometry | https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry#Well-known_binary[Well-known binary] (https://portal.ogc.org/files/?artifact_id=25355[Simple Feature Access] / Section 8)|
 |===
 
-NOTE: A client that does not understand or care about artificial segments information will simply skip over it with the feature table offsets.
+.(Multi)LineString artificial points information
+[[linestring-artificial]]
+[options="header"]
+|===
+| Field | Type | Size
+| LineString index | uint32 | 4 bytes
+| Count of artificial points | uint32 | 4 bytes
+| Array of point indices | uint32 | Count * 4 bytes
+|===
+
 
 ////
 
