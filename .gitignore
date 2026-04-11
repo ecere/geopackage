@@ -19,3 +19,4 @@ relaton/
 *.asciidoc.log.txt
 *.doc
 *.html
+*.abort

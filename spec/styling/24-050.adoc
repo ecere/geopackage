@@ -20,7 +20,7 @@
 :comment: ### Date on which the standard was published; mandatory
 :published-date: 2024-10-14
 :comment: ### External link referencing the document; optional. If not provided, a default value is created following this structure: "http://www.opengis.net/doc/{abbrevation of doctype}/{abbrev}/{version}",
-:external-id: http://www.opengis.net/IS/GPKG-Styling/1.0
+:external-id: https://www.opengis.net/is/geopackage-styling/1.0
 :comment: ### Author one
 :fullname: Jérôme Jacovella-St-Louis
 :comment: ### Author two
