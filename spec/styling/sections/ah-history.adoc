@@ -6,6 +6,5 @@
 [width="90%",options="header"]
 |===
 |Date       |Release |Editor      | Primary clauses modified |Description
-|2024-03-22 |0.1     |J. St-Louis |all                       |initial version
-|2024-05-30 |0.2     |J. St-Louis |all                       |final draft ready for review
+|2019-04-02 |0.1     |J. Yutzler, J. St-Louis |all                       |initial version
 |===

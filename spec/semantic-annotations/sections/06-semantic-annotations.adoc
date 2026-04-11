@@ -9,7 +9,7 @@ These requirements define how semantic annotations can be applied to any busines
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/semantic-annotations
+identifier:: /req/geopackage-semantic/semantic-annotations
 description:: For defining semantic annotations
 part:: A semantic annotation SHALL be defined as an entry in a `gpkgext_semantic_annotations` table with the following columns
 * `id`, the a primary key
@@ -30,14 +30,15 @@ CREATE TABLE gpkgext_semantic_annotations (
 )
 ----
 
-See <<compusult-gpkg_semantic_annotations>> for an implementation example of the `gpkgext_semantic_annotations` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkg_semantic_annotations>> for an implementation example of the `gpkgext_semantic_annotations` table.
 
-NOTE: This RBT extension relies on semantic annotations for the association of both tilesets and styles to a `GeoDataClass` `type` of semantic annotation.
+NOTE: Semantic annotations can be used for the association of both tilesets and styles to a `GeoDataClass` `type` of semantic annotation.
 
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/sa-reference
+identifier:: /req/geopackage-semantic/sa-reference
 description:: For associating semantic annotations
 part:: Associating a particular business object with a semantic annotation SHALL be done by adding an entry to a `gpkgext_sa_reference` table with the following columns:
 * `table_name`, the name of the table containing the business object
@@ -58,6 +59,7 @@ CREATE TABLE gpkgext_sa_reference (
 )
 ----
 
-See <<compusult-gpkgext_sa_references>> for an implementation example of the `gpkgext_sa_reference` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_sa_references>> for an implementation example of the `gpkgext_sa_reference` table.
 
 NOTE: There can be a many-to-many mapping between business object rows and semantic annotations.

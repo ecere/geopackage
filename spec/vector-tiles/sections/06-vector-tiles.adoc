@@ -13,7 +13,7 @@ For vector tilesets, all of the http://www.geopackage.org/guidance/getting-start
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/vector-tiles
+identifier:: /req/geopackage-vt/vector-tiles
 description:: For defining how vector tiles are encoded
 part:: Vector tilesets SHALL be stored in a GeoPackage with individual tiles stored in the `tile_data` blob of a tile pyramid user data table.
 part:: The `data_type` of a vector tileset entry in the `gpkg_contents` table SHALL be `vector-tiles`.
@@ -42,7 +42,7 @@ As with other GeoPackage tables, this extension takes no position on how either 
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/vector-tiles-layers
+identifier:: /req/geopackage-vt/vector-tiles-layers
 description:: For describing the layers contained in vector tilesets
 part:: GeoPackage containing vector tiles SHALL include a `gpkgext_vt_layers` table describing the layers in a vector tile set. The columns in this table are:
 * `id`, the primary key
@@ -50,7 +50,7 @@ part:: GeoPackage containing vector tiles SHALL include a `gpkgext_vt_layers` ta
 * `name`, the layer name
 * `description`, an optional text description
 * `minzoom` and `maxzoom`, the optional integer minimum and maximum zoom levels
-* `attributes_table_name`, the optional name of an attributes table containing the attributes (when encoding attributes into a separate attributes tables rather than embedding them in the vector tiles -- should be NULL for this RBT extension)
+* `attributes_table_name`, the optional name of an attributes table containing the attributes (when encoding attributes into a separate attributes tables rather than embedding them in the vector tiles)
 * `geometry_dimension`, the dimension of the geometry found in the layer (NULL: unknown/mixed, 0: Point/MultiPoint, 1: LineString/MultiLineString, 2: Polygon/MultiPolygon)
 ====
 
@@ -74,7 +74,7 @@ See <<compusult-gpkgext_vt_layers>> for an implementation example of the `gpkgex
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/vector-tiles-fields
+identifier:: /req/geopackage-vt/vector-tiles-fields
 description:: For describing the fields contained in vector tilesets
 part:: GeoPackage containing vector tiles SHALL include a `gpkgext_vt_fields` table describing the fields (attributes) for a tiled feature data layer. The columns in this table are:
 * `id`, the primary key
@@ -99,7 +99,7 @@ See <<compusult-gpkgext_vt_fields>> for an implementation example of the `gpkgex
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/content-types
+identifier:: /req/geopackage-vt/content-types
 description:: For specifying the media types and content encoding of user data tables
 part:: The GeoPackage SHALL include a `gpkgext_content_types` table identifying the media type containing the following columns:
 * `content_id`, a foreign key to the corresponding entry in the `gpkg_contents`
@@ -363,7 +363,7 @@ based on https://github.com/google/protobuf[Google Protocol Buffers] for encodin
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/mapbox-vector-tiles
+identifier:: /req/geopackage-vt/mapbox-vector-tiles
 description:: For describing how tiles are encoded using Mapbox Vector Tiles
 part:: Tilesets encoded using Mapbox Vector Tiles SHALL be stored as blobs in the `tile_data` fields of http://www.geopackage.org/guidance/getting-started.html#user-data-tables[user-defined tiles tables].
 part:: The `tile_data` blobs SHALL be encoded Google Protocol Buffers (PBF) using the schema https://github.com/mapbox/vector-tile-spec/blob/master/2.1/vector_tile.proto[defined for MVT].
@@ -373,7 +373,7 @@ part:: If an encoding such as `gzip` or `deflate` is specified in the `gpkgext_c
 [recommendation]
 ====
 [%metadata]
-identifier:: /rec/rbt/mvt-id
+identifier:: /rec/geopackage-vt/mvt-id
 description:: For specifying a unique feature ID
 part:: Features contained in Mapbox Vector Tiles contained in a GeoPackage vector tileset SHOULD make use of the MVT `id` field to store a persistent numeric identifier
 uniquely identifying a particular feature of the parent layer. This enables client to recognize features across tile boundaries (for example, to reconstruct the original features)

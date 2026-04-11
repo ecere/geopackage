@@ -8,7 +8,7 @@ These requirements provide a mechanism to include the style sheets, symbols and 
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/styles
+identifier:: /req/geopackage-styling/styles
 description:: For defining styles
 part:: Styles to portray the data in a GeoPackage SHALL be defined as entries in the `gpkgext_styles` table containing the following column:
 * `id`, a primary key
@@ -29,12 +29,13 @@ CREATE TABLE gpkgext_styles (
 )
 ----
 
-See <<compusult-gpkgext_styles>> for an implementation example of the `gpkgext_styles` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_styles>> for an implementation example of the `gpkgext_styles` table.
 
 [recommendation]
 ====
 [%metadata]
-identifier:: /rec/rbt/styles-uris
+identifier:: /rec/geopackage-styling/styles-uris
 description:: Guidance on style URIs
 part:: Where possible, style URIs SHOULD resolve to a network-accessible resource.
 part:: When that is not possible, style URIs SHOULD be unique.
@@ -44,7 +45,7 @@ part:: If no existing URI scheme is available, a style URI SHOULD take the form 
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/style-sheets
+identifier:: /req/geopackage-styling/style-sheets
 description:: For encoding style sheets
 part:: Style sheets, a list of styling rules encoded in a particular styling language, corresponding to a particular style SHALL be defined as entries in the `gpkgext_stylesheets` table containing the following column:
 * `id`, a primary key
@@ -65,12 +66,13 @@ CREATE TABLE gpkgext_stylesheets (
 )
 ----
 
-See <<compusult-gpkgext_stylesheets>> for an implementation example of the `gpkgext_stylesheets` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_stylesheets>> for an implementation example of the `gpkgext_stylesheets` table.
 
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/symbols
+identifier:: /req/geopackage-styling/symbols
 description:: For defining symbols
 part:: Symbols SHALL be defined in a `gpkgext_symbols` table contains containing the following columns:
 * `id`, a primary key
@@ -91,12 +93,13 @@ CREATE TABLE gpkgext_symbols (
 )
 ----
 
-See <<compusult-gpkgext_symbols>> for an implementation example of the `gpkgext_symbols` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_symbols>> for an implementation example of the `gpkgext_symbols` table.
 
 [recommendation]
 ====
 [%metadata]
-identifier:: /rec/rbt/symbol-uris
+identifier:: /rec/geopackage-styling/symbol-uris
 description:: Guidance on symbol URIs
 part:: Where possible, symbol URIs SHOULD resolve to a network-accessible resource.
 part:: When that is not possible, symbol URIs SHOULD be unique.
@@ -107,7 +110,7 @@ part:: If no existing URI scheme is available, a symbol URI SHOULD take the form
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/symbol-images
+identifier:: /req/geopackage-styling/symbol-images
 description:: For defining symbols
 part:: Images representing symbols SHALL be defined in a `gpkgext_symbol_images` table contains containing the following columns:
 * `id`, a primary key
@@ -132,7 +135,8 @@ CREATE TABLE gpkgext_symbol_images (
 )
 ----
 
-See <<compusult-gpkgext_symbol_images>> for an implementation example of the `gpkgext_symbol_images` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_symbol_images>> for an implementation example of the `gpkgext_symbol_images` table.
 
 NOTE: If a symbol sprite sheet is included as a single image containing multiple symbols, multiple entries of this table will reference the same sprite sheet symbol content entry.
 
@@ -141,7 +145,7 @@ NOTE: Multiple images may be defined for the same symbol so as to offer differen
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/symbol-content
+identifier:: /req/geopackage-styling/symbol-content
 description:: For defining symbols
 part:: The actual data for an image SHALL be encoded in a `gpkgext_symbol_content` table containing the following column:
 * `id`, a primary key
@@ -161,7 +165,8 @@ CREATE TABLE gpkgext_symbol_content (
 )
 ----
 
-See <<compusult-gpkgext_symbol_content>> for an implementation example of the `gpkgext_symbol_content` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_symbol_content>> for an implementation example of the `gpkgext_symbol_content` table.
 
 NOTE: Multiple versions of the same image may be included (e.g., both SVG and PNG).
 
@@ -173,7 +178,7 @@ These requirements define how fonts required by styles can be included in the Ge
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/fonts
+identifier:: /req/geopackage-styling/fonts
 description:: For optionally including fonts
 part:: If included, fonts required by styles SHALL be encoded in a `gpkgext_fonts` table containing the following column:
 * `id`, a primary key
@@ -194,7 +199,8 @@ CREATE TABLE gpkgext_fonts(
 )
 ----
 
-See <<compusult-gpkgext_fonts>> for an implementation example of the `gpkgext_fonts` table.
+// TODO: Include examples from RBT ER?
+// See <<compusult-gpkgext_fonts>> for an implementation example of the `gpkgext_fonts` table.
 
 [[CartoSymCSSStyleClause]]
 === CartoSym-CSS Style Encoding Requirements
@@ -219,15 +225,15 @@ These requirements define how to include style sheets specified in the https://d
 [requirement]
 ====
 [%metadata]
-identifier:: /req/rbt/mapboxgl-style
+identifier:: /req/geopackage-styling/mapboxgl-style
 description:: For including MapboxGL style sheets
 part:: Styling rules encode according to the MapboxGL style sheets SHALL be included in the `gpkgext_stylesheets` table.
-part:: The MapboxGL style sheet SHALL refer to a particular tileset by setting the `url` field of a `source` to the GeoDataClass of that tileset, as associated using a `GeoDataClass` type of semantic annotations (`/req/rbt/semantic-annotations`).
+part:: The MapboxGL style sheet SHALL refer to a particular tileset by setting the `url` field of a `source` to the GeoDataClass of that tileset, as associated using a `GeoDataClass` type of semantic annotations (`/req/geopackage-styling/semantic-annotations`).
 ====
 
 NOTE: By supporting a TileJSON representation of the schemas associated with a GeoDataClass, it would be possible for the `url` field to both function as a representative data source for the style,
 while also corresponding to a GeoDataClass. However, it does not however limit the use of this style strictly with that representative data source. The style should be suitable to portray
-any RBT data source conforming to the same schemas associated with the GeoDataClass.
+any data source conforming to the same schemas associated with the GeoDataClass.
 
 NOTE: An alternative was considered to specify the GeoDataClasses for the style in a separate `geoDataClass` property of the source, instead the `url` field.
 A final decision on this approach should consider the possibility of the GeoDataClass registry on the OGC definition server to return a TileJSON representation of the schemas,

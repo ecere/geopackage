@@ -19,7 +19,7 @@ https://docs.ogc.org/per/19-018.html[Testbed 15], https://docs.ogc.org/per/20-01
 ====
 Insert Preface Text here. Give OGC specific commentary: describe the technical content, reason for document, history of the document and precursors, and plans for future work.
 
-There are two ways to specify the Preface: "simple clause" or "full clasuse"
+There are two ways to specify the Preface: "simple clause" or "full clause"
 
 If the Preface does not contain subclauses, it is considered a simple preface clause. This one is entered as text after the `.Preface` label and must be placed between the AsciiDoc document attributes and the first AsciiDoc section title. It should not be give a section title of its own.
 
@@ -33,7 +33,7 @@ If the Preface contains subclauses, it needs to be encoded as a full preface cla
 ////
 
 ////
-[THIS TEXT IS ALREADY ADDED AUTOMATICALLY IN THE FRONTISPIECE OF ALL OGC DOUCMENTS]
+[THIS TEXT IS ALREADY ADDED AUTOMATICALLY IN THE FRONTPIECE OF ALL OGC DOCUMENTS]
 
 Attention is drawn to the possibility that some of the elements of this document may be the subject of patent rights. The Open Geospatial Consortium shall not be held responsible for identifying any or all such patent rights.
 
