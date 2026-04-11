@@ -2,7 +2,7 @@
 /build/
 Gemfile.lock
 *.iml
-.project
+.project
 .DS_Store
 /spec/conceptual-model/relaton
 document.doc
@@ -10,3 +10,12 @@ document.html
 document.err
 document.presentation.xml
 document.xml
+iev/
+relaton/
+*.rxl
+*.pdf
+*.presentation.xml
+*.err
+*.asciidoc.log.txt
+*.doc
+*.html

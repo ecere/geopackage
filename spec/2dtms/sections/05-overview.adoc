@@ -1,0 +1,4 @@
+[[OverviewClause]]
+== Overview
+
+This Standard describes an extension for using 2D Tile Matrix Sets in GeoPackage initially developed during the Vector Tiles Pilot OGC initiative sponsored by the US Army Geospatial Center (AGC).

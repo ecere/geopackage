@@ -1,0 +1,15 @@
+
+== Terms and Definitions
+
+////
+Note that the initial notice about terms ("This document uses the terms defined in OGC Policy Directive 49...")
+is inserted automatically by Metanorma using the agreed standardised language, and you should not enter it here.
+////
+
+[[term-2DTMS]]
+=== 2-Dimensional Tile Matrix Set (2DTMS)
+
+tiling scheme consisting of a set of tile matrices defined at different scales covering approximately the same area and having a common coordinate reference system.
+
+[.source]
+<<OGC17-083r4>>

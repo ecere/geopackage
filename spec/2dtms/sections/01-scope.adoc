@@ -1,0 +1,4 @@
+
+== Scope
+
+This Standard describes an extension for alignment with and re-use of OGC 2D Tile Matrix Sets in GeoPackage developed during OGC Pilots initiatives.

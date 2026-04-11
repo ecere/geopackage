@@ -1,0 +1,10 @@
+
+[appendix]
+== Revision History
+
+[%unnumbered]
+[width="90%",options="header"]
+|===
+|Date       |Release |Editor      | Primary clauses modified |Description
+|2019-12-17 |0.1     |J. Yutzler, J. St-Louis |all                       |initial version
+|===
