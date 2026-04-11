@@ -1,4 +1,19 @@
-# A GeoPackage extension for 3D Models
+[[Models3DClause]]
+== A GeoPackage extension for 3D Models
+
+=== 3D Models Requirements
+
+////
+[requirement]
+====
+[%metadata]
+identifier:: /req/geopackage-3d-models/req...
+description:: For defining ...
+part:: A 3D model SHALL be defined as an entry in a `...` table with the following columns
+* `id`, the a primary key
+* `type`, ...
+====
+////
 
 Extension name: ***`gpkgext-3dmodels`***
 
@@ -13,7 +28,7 @@ The tables registered with this extension are:
 - the individual tiles tables for batched 3D models (only used for approach B)
 - `gpkgext_textures` for shared textures
 
-## A) Referenced 3D models with placement information
+==== A) Referenced 3D models with placement information
 
 In this approach, best suited for geo-typical models, a single table per GeoPackage (`gpkgext_3d_models`) is used to define one model per row, in a blob within the `model` field.
 A `format` field allows to specify the format. Both glTF and E3D have been used in the experiments.
@@ -63,11 +78,11 @@ CREATE TABLE attributes_Trees (
    `model::scale` REAL)
 ```
 
-See an [example GeoPackage](https://portal.ogc.org/files/?artifact_id=95351) using reference points as Mapbox Vector Tiles and glTF models
+See an https://portal.ogc.org/files/?artifact_id=95351[example GeoPackage] using reference points as Mapbox Vector Tiles and glTF models
 
-See an [example GeoPackage](https://portal.ogc.org/files/?artifact_id=95340) using reference points as GNOSIS Map Tiles and E3D models
+See an https://portal.ogc.org/files/?artifact_id=95340[example GeoPackage] using reference points as GNOSIS Map Tiles and E3D models
 
-## B) Batched 3D Models tiles
+==== B) Batched 3D Models tiles
 
 In this approach, best suited for geo-specific models, a single model covers a whole tile, batching all 3D models from the data layer found within that tile, and is stored in a tiles table much like raster or vector tiles (as a glTF blob in the `tile_data` field).
 It is closer to the 3D Tiles / One World Terrain approach, and could potentially also combine both 3D Terrain and 3D Models (though ideally keeping them as distinct nodes within the model). Such an approach may facilitate transition between CDBX and OWT.
@@ -78,11 +93,11 @@ The translation origin of the model, as well as its orientation, is implied from
 
 The height of the individual features (e.g. buildings) within the batched models tile models has already been adjusted match the elevation model. However, each separate feature from CDB is encoded in the model as a separate node to facilitate re-adjusting it to new elevation.
 
-See an [example GeoPackage](https://portal.ogc.org/files/?artifact_id=95337) using batched 3D models encoded as glTF
+See an https://portal.ogc.org/files/?artifact_id=95337[example GeoPackage] using batched 3D models encoded as glTF
 
-See an [example GeoPackage](https://portal.ogc.org/files/?artifact_id=95334) using batched 3D models encoded as E3D
+See an https://portal.ogc.org/files/?artifact_id=95334[example GeoPackage] using batched 3D models encoded as E3D
 
-## Textures table
+==== Textures table
 
 The textures table has the following fields:
 
@@ -117,4 +132,4 @@ id  name   width  height  format  texture
 4   2.png  256    256     png     �PNG
 ```
 
-See also the [CDB X Discussion Paper](https://github.com/sofwerx/cdb2-eng-report/blob/master/11-tiling-coverages.adoc#tiled-3d-models) describing the experiments in which this extension was developed, along with the resulting sample GeoPackages.
+See also the https://github.com/sofwerx/cdb2-eng-report/blob/master/11-tiling-coverages.adoc#tiled-3d-models[CDB X Discussion Paper] describing the experiments in which this extension was developed, along with the resulting sample GeoPackages.

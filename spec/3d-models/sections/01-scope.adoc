@@ -1,0 +1,4 @@
+
+== Scope
+
+This Standard describes an extension for storing 3D Model in GeoPackage developed during CDB Code Sprint initiatives.

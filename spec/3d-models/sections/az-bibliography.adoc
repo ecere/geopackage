@@ -1,0 +1,7 @@
+
+
+[bibliography]
+== Bibliography
+
+* [[[OGC20-092, OGC 20-092]]],
+* [[[CDBWShop,CDBWShop]]], CDB 2.0 2023 Summer Workshop GitHub Repository, https://github.com/opengeospatial/CDBV2-2023-Summer-Workshop
