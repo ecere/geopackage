@@ -1,0 +1,4 @@
+
+== Scope
+
+This Standard describes an extension for grouping and indexing tiles in GeoPackage.
