@@ -177,8 +177,10 @@ To facilitate extraction from a large global high-resolution dataset and easily 
 
 ==== Profiling this extension
 
-This extension addresses the use cases of splitting large datasets into multiple GeoPackages for efficient access using deterministic naming which extend beyond CDB. Some example datasets where this would be convenient:
+This extension addresses the use cases of splitting large datasets into multiple GeoPackages for efficient access using deterministic naming.
+Some example datasets where this would be convenient:
 
+- https://www.ogc.org/standards/cdb/[OGC CDB] (a model and structure for a virtual detailed representation of the earth),
 - OrdnanceSurvey Master Map,
 - OpenStreetMap Planet OSM,
 - ESA sentinel-2
@@ -203,6 +205,7 @@ For Modeling and Simulation uses, as well as data repository cases, the Level gr
 
 ===== Separate packages for each data layer
 
+////
 https://portal.ogc.org/index.php?m=projects&a=view&project_id=466&tab=2&artifact_id=95320[Data folder on the portal]
 
 - https://portal.ogc.org/files/?artifact_id=95346[Airport lights]
@@ -212,13 +215,25 @@ https://portal.ogc.org/index.php?m=projects&a=view&project_id=466&tab=2&artifact
 - https://portal.ogc.org/files/?artifact_id=95348[Hydrography]
 - https://portal.ogc.org/files/?artifact_id=95350[Roads]
 - https://portal.ogc.org/files/?artifact_id=95349[Trees]
+////
+
 - https://data.ogc.org/2020/11/ImageryHigh.7z[High resolution imagery]
 - https://data.ogc.org/2020/11/ImageryMedium.7z[Medium resolution imagery]
 - https://data.ogc.org/2020/11/BlueMarble.7z[Blue Marble imagery]
-- https://portal.ogc.org/files/?artifact_id=95345[_cdb.json_ index] (replaced by the following primary GeoPackage tables)
 
-A new `SanDiego.gpkg` primary GeoPackage for those GeoPackages that replaces the above _cdb.json_ should therefore contain a `gpkgext_hierarchical_gpkg_index` table that looks like this:
+// - https://portal.ogc.org/files/?artifact_id=95345[_cdb.json_ index] (replaced by the following primary GeoPackage tables)
 
+A `SanDiego.gpkg` primary GeoPackage referencing the high-resolution imagery GeoPackage would contain a `gpkgext_hierarchical_gpkg_index` table that looks like this:
+
+[#table_gpkgext_hierarchical_gpkg_index_example,reftext='{table-caption} {counter:table-num}']
+.Example `gpkgext_hierarchical_gpkg_index` table
+[options="header"]
+|===
+| table_name                      | package_id | geodataclass_uri                                 | max_level
+| tiles_ImageryHigh               | 2          | [ogc-geodataclass:cdb-imagery]                   | 18
+|===
+
+////
 [#table_gpkgext_hierarchical_gpkg_index_example,reftext='{table-caption} {counter:table-num}']
 .Example `gpkgext_hierarchical_gpkg_index` table
 [options="header"]
@@ -233,9 +248,19 @@ A new `SanDiego.gpkg` primary GeoPackage for those GeoPackages that replaces the
 | tiles_Roads                     | 7          | [ogc-geodataclass:cdb-RoadNetwork_Lines]         | 16
 | tiles_Hydrography               | 8          | [ogc-geodataclass:cdb-Hydrography_Polygons]      | 16
 |===
+////
 
 and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 
+[#table_gpkgext_hierarchical_gpkg_packages_example,reftext='{table-caption} {counter:table-num}']
+.Example `gpkgext_hierarchical_gpkg_packages` table
+[options="header"]
+|===
+| id  | name           | level_grouping_count | max_grouping_level | tms_id
+|   1 | ImageryHigh    | 7                    | 18                 | 1 (GGG)
+|===
+
+////
 [#table_gpkgext_hierarchical_gpkg_packages_example,reftext='{table-caption} {counter:table-num}']
 .Example `gpkgext_hierarchical_gpkg_packages` table
 [options="header"]
@@ -250,19 +275,21 @@ and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 |   7 | Roads          | NULL                 | NULL               | 1 (GGG)
 |   8 | Hydrography    | NULL                 | NULL               | 1 (GGG)
 |===
+////
 
-This should correctly index the data following the same https://github.com/sofwerx/cdb2-eng-report/blob/master/11-tiling-coverages.adoc#proposed-levels-of-detail-grouping[GeoPackage file naming conventions from the CDB X Techsprint] summarized above.
+This should correctly index the data following the same
+https://github.com/sofwerx/cdb2-eng-report/blob/master/11-tiling-coverages.adoc#proposed-levels-of-detail-grouping[GeoPackage file naming conventions from the CDB X Techsprint]
+summarized above.
 
 ===== One package grouping all data layers together by 5 tile levels
 
-https://data.ogc.org/2020/11/SanDiego.7z[7-zip file of directories on the portal]
+https://data.ogc.org/2020/11/SanDiego.7z[7-zip file of directories]
 
-https://portal.ogc.org/files/?artifact_id=95370[7-zip file of directories on the portal (smaller file, only for small spatial subset)]
+// https://portal.ogc.org/files/?artifact_id=95370[7-zip file of directories on the portal (smaller file, only for small spatial subset)]
 
-https://portal.ogc.org/files/?artifact_id=95366[_cdb.json_ index file on the portal]
+// https://portal.ogc.org/files/?artifact_id=95366[_cdb.json_ index file on the portal]
 
-A new `SanDiego.gpkg` primary GeoPackage for those GeoPackages that replaces the above _cdb.json_ should therefore contain a `gpkgext_hierarchical_gpkg_index`
-table that looks like this:
+NOTE: This `SanDiego.gpkg` GeoPackage should be augmented to contain a `gpkgext_hierarchical_gpkg_index` table that looks like this:
 
 [#table_gpkgext_hierarchical_gpkg_index_one_package,reftext='{table-caption} {counter:table-num}']
 .Example `gpkgext_hierarchical_gpkg_index` table for grouping all data layers into one package
@@ -291,11 +318,12 @@ and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 
 ===== Single GeoPackage with everything
 
-https://data.ogc.org/2020/11/SanDiego.gpkg.7z[GeoPackage file on the portal]
+https://data.ogc.org/2020/11/SanDiego.gpkg.7z[GeoPackage file]
 
-https://portal.ogc.org/files/?artifact_id=95378[_cdb.json_ index file on the portal]
+// https://portal.ogc.org/files/?artifact_id=95378[_cdb.json_ index file on the portal]
 
-This `SanDiego.gpkg` (which would also act as the primary GeoPackage, replacing the above _cdb.json_) would be enhanced with the following `gpkgext_hierarchical_gpkg_index` table that looks like this:
+This `SanDiego.gpkg` (which would also act as the primary GeoPackage) would be augmented with the following `gpkgext_hierarchical_gpkg_index` table
+that looks like this:
 
 [#table_gpkgext_hierarchical_gpkg_index_single_gpkg,reftext='{table-caption} {counter:table-num}']
 .Example `gpkgext_hierarchical_gpkg_index` table for everything stored in a single GeoPackage
