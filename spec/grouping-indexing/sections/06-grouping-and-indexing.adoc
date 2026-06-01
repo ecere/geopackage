@@ -199,30 +199,6 @@ For users at the edge and smaller datasets over a small area, storing everything
 
 For Modeling and Simulation uses, as well as data repository cases, the Level grouping functionality can be used, and related data layers can be organized as a single package.  This involves storing a region of the world at a set of zoom levels, or levels of detail, within a single GeoPackage, with a specified file and directory naming scheme.  This approach would allow for faster access to data at specified areas and zoom levels.  This approach would also lend itself to concurrent access and editing for data repository maintainers.
 
-==== CDB 2.x GeoDataClasses
-
-This section will be moved to the _CDB 2 GeoPackage Data Store_ document and should cover all datasets to be inherited from CDB 1.x
-(https://docs.ogc.org/is/15-113r6/15-113r6.html), and should be registered with the OGC Naming Authority once a GeoDataClass register is set up.
-
-NOTE: `[ogc-geodataclass:cdb-elevation]` is a safe CURIE abbreviation of http://www.opengis.net/def/geodataclass/OGC/0/cdb-elevation .
-
-[#table_cdb_geodataclasses,reftext='{table-caption} {counter:table-num}']
-.CDB GeoDataClasses
-[options="header"]
-|===
-| GeoDataClass (safe CURIE) | CDB 1 Dataset Code | CDB 1 CS1 | CDB 1 CS2
-| [ogc-geodataclass:cdb-elevation] | 001 | 001 |
-| [ogc-geodataclass:cdb-imagery] | 004 |001 |
-| [ogc-geodataclass:cdb-ManMade_3DModels] | 100 | 001 |
-| [ogc-geodataclass:cdb-ManMade_Instanced3DModels] | 101 | 001 |
-| [ogc-geodataclass:cdb-Trees_Instanced3DModels] | 101 |  003 |
-| [ogc-geodataclass:cdb-Airport_Lights] | 101 | 004 | 001
-| [ogc-geodataclass:cdb-RoadNetwork_Lines] | 201| 002| 003 |
-| [ogc-geodataclass:cdb-Hydrography_Polygons] | 204| 002| 005
-|===
-
-NOTE: The Corona Bridge was in _ManMade_Instanced3DModels_ in the last version of the San Diego dataset, but should probably go into _ManMade_3DModels_? (there's only one)
-
 ==== Example Datasets and primary GeoPackages
 
 ===== Separate packages for each data layer
