@@ -1,4 +1,5 @@
 [[OverviewClause]]
 == Overview
 
-This Standard describes an extension for grouping and indexing tiles in GeoPackage.
+This Standard describes an extension for grouping and indexing tiles in GeoPackage while defining the ability to optionally split data layers stored in
+GeoPackages using a deterministic approach to organize the directory structure and naming individual GeoPackage files.
