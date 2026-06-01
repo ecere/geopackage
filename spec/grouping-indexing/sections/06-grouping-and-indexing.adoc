@@ -31,7 +31,6 @@ https://www.opengis.net/is/geopackage-2dtms/1.0
 CREATE TABLE gpkgext_hierarchical_gpkg_index(
    table_name REFERENCES gpkg_contents(table_name) NOT NULL,
    package_id REFERENCES gpkgext_hierarchical_gpkg_packages(id) NOT NULL,
-   geodataclass_uri TEXT,
    max_level INTEGER
 )
 
@@ -44,6 +43,11 @@ CREATE TABLE gpkgext_hierarchical_gpkg_packages(
 )
 ```
 
+////
+   geodataclass_uri TEXT,
+////
+
+
 ==== Fields
 
 ===== `gpkgext_hierarchical_gpkg_index` table
@@ -55,15 +59,20 @@ CREATE TABLE gpkgext_hierarchical_gpkg_packages(
 | Name | Description
 | `table_name` | entry in the `gpkg_contents` table of the data layers of each; The `gpkgext_contents` will exist in the primary GeoPackage, but the individual tiles table will be dummy tables with no actual entry if the data is stored externally in the GeoPackages grouping tiles
 | `package_id`| reference to the package entry in the `gpkgext_hierarchical_gpkg_packages` table in which this data layer is stored
-| `geodataclass_uri`| The https://github.com/opengeospatial/styles-and-symbology/issues/12[GeoDataClass] identifying the data layer (see table to define below)
 | `max_level`| the maximum level for this data layer across all sub-packages; this may be greater than the associated package `max_level` to allow for insets, in which case the insets will be stored in the package of the most detailed zoom level
 |===
 
+////
+| `geodataclass_uri`| The https://github.com/opengeospatial/styles-and-symbology/issues/12[GeoDataClass] identifying the data layer (see table to define below)
+////
+
+////
 NOTE: For vector tiles, the content table could contain multiple related data layers which together have a single GeoDataClass and are stored together in MVT
 or https://github.com/opengeospatial/CDBV2-2023-Summer-Workshop/wiki/WKB-Collection[WKBC] blobs supporting multiple collections, or it may be individual data
 layers -- we would need to decide whether CDB Vector GeoDataClasses should be individual and/or multi-layer. When not using tiles, each entry needs its own
 table, so this would require individual GeoDataClasses per vector layer. Loading multiple vector layers that will be shown together (like OSM data layer) can
 perform better, so we need to consider this.
+////
 
 ===== `gpkgext_hierarchical_gpkg_packages` table
 
@@ -229,8 +238,8 @@ A `SanDiego.gpkg` primary GeoPackage referencing the high-resolution imagery Geo
 .Example `gpkgext_hierarchical_gpkg_index` table
 [options="header"]
 |===
-| table_name                      | package_id | geodataclass_uri                                 | max_level
-| tiles_ImageryHigh               | 2          | [ogc-geodataclass:cdb-imagery]                   | 18
+| table_name                      | package_id | max_level
+| tiles_ImageryHigh               | 2          | 18
 |===
 
 ////
@@ -295,6 +304,18 @@ NOTE: This `SanDiego.gpkg` GeoPackage should be augmented to contain a `gpkgext_
 .Example `gpkgext_hierarchical_gpkg_index` table for grouping all data layers into one package
 [options="header"]
 |===
+| table_name                      | package_id | max_level
+| tiles_Elevation                 | 1          | 16
+| tiles_ImageryHigh               | 1          | 18
+| tiles_Buildings                 | 1          | 13
+| tiles_CoronadoBridge            | 1          | 12
+| tiles_Trees                     | 1          | 12
+| tiles_AirportLights             | 1          | 8
+| tiles_Roads                     | 1          | 16
+| tiles_Hydrography               | 1          | 16
+|===
+
+////
 | table_name                      | package_id | geodataclass_uri                                 | max_level
 | tiles_Elevation                 | 1          | [ogc-geodataclass:cdb-elevation]                 | 16
 | tiles_ImageryHigh               | 1          | [ogc-geodataclass:cdb-imagery]                   | 18
@@ -304,7 +325,7 @@ NOTE: This `SanDiego.gpkg` GeoPackage should be augmented to contain a `gpkgext_
 | tiles_AirportLights             | 1          | [ogc-geodataclass:cdb-AirportLights]             | 8
 | tiles_Roads                     | 1          | [ogc-geodataclass:cdb-RoadNetwork_Lines]         | 16
 | tiles_Hydrography               | 1          | [ogc-geodataclass:cdb-Hydrography_Polygons]      | 16
-|===
+////
 
 and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 
@@ -329,6 +350,18 @@ that looks like this:
 .Example `gpkgext_hierarchical_gpkg_index` table for everything stored in a single GeoPackage
 [options="header"]
 |===
+| table_name                      | package_id | max_level
+| tiles_Elevation                 | 1          | 16
+| tiles_ImageryHigh               | 1          | 18
+| tiles_Buildings                 | 1          | 13
+| tiles_CoronadoBridge            | 1          | 12
+| tiles_Trees                     | 1          | 12
+| tiles_AirportLights             | 1          | 8
+| tiles_Roads                     | 1          | 16
+| tiles_Hydrography               | 1          | 16
+|===
+
+////
 | table_name                      | package_id | geodataclass_uri                                 | max_level
 | tiles_Elevation                 | 1          | [ogc-geodataclass:cdb-elevation]                 | 16
 | tiles_ImageryHigh               | 1          | [ogc-geodataclass:cdb-imagery]                   | 18
@@ -338,7 +371,7 @@ that looks like this:
 | tiles_AirportLights             | 1          | [ogc-geodataclass:cdb-AirportLights]             | 8
 | tiles_Roads                     | 1          | [ogc-geodataclass:cdb-RoadNetwork_Lines]         | 16
 | tiles_Hydrography               | 1          | [ogc-geodataclass:cdb-Hydrography_Polygons]      | 16
-|===
+////
 
 and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 
