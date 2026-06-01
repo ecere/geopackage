@@ -5,7 +5,10 @@
 
 ==== Description
 
-This extension defines the ability to optionally split data layers stored in GeoPackages using a deterministic approach to organize the directory structure and naming individual GeoPackage files. This extension also describes how to associate each data layer with a _GeoDataClass_ URI so that clients can easily find a particular class of data in the indexed GeoPackages.
+This extension defines the ability to optionally split data layers stored in GeoPackages using a deterministic approach to organize the directory structure and naming individual GeoPackage files.
+
+Each data layer can also be associated with a _GeoDataClass_ URI using the https://docs.ogc.org/DRAFTS/24-049.html[Semantic Annotations] extension so that clients can easily find a particular class of data in the indexed GeoPackages.
+For tiled vector data using the https://docs.ogc.org/DRAFTS/24-048.html[Tiled Feature Date extension], this can be done both at the level of the multi-layer tileset, as well as at the individual component vector layer.
 
 This extension defines tables describing the GeoPackage configuration, allowing to best balance tradeoffs between the number of GeoPackages created and the file and table sizes within each GeoPackage for a particular dataset or use case.
 
