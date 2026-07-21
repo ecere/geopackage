@@ -1,6 +1,15 @@
 [[SemanticAnnotationsClause]]
 == Semantic Annotations
 
+[[rc_semantic_annotations]]
+[requirements_class]
+====
+[%metadata]
+label:: https://www.opengis.net/geopackage-semantic/req
+subject:: Data Product
+inherit:: http://www.geopackage.org/spec140/#extension_mechanism
+====
+
 === Semantic Annotations Requirements
 
 A semantic annotation is a semantically grounded term that can be applied to another concept.
@@ -12,7 +21,7 @@ These requirements define how semantic annotations can be applied to any busines
 identifier:: /req/geopackage-semantic/semantic-annotations
 description:: For defining semantic annotations
 part:: A semantic annotation SHALL be defined as an entry in a `gpkgext_semantic_annotations` table with the following columns
-* `id`, the a primary key
+* `id`, a primary key
 * `type`, a semantically grounded type (category) for the annotation
 * `title`, a human-readable title for the annotation
 * `description`, an optional human-readable text description for the annotation
