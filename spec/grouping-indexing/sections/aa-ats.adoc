@@ -4,26 +4,24 @@
 
 === Conformance Class Grouping and Indexing GeoPackage Extension
 
-////
-
-[[conf_rbt,/conf/geopackage-gi]]
+[[conf_geopackage-gi,/conf/geopackage-gi]]
 [conformance_class]
 ====
 [%metadata]
-identifier:: https://www.opengis.net/#geopackage-gi/conf
-target:: https://www.opengis.net/#geopackage-gi/req
+identifier:: https://www.opengis.net/spec/geopackage-gi/1.0/conf/core
+target:: https://www.opengis.net/spec/geopackage-gi/1.0/req/core
 classification:: Target Type:Data Product
-abstract-test:: /conf/geopackage-gi/extensions
+abstract-test:: /conf/core/extensions
 ====
 
 ==== Abstract Test for Requirement ...
 
-[[conf_rbt_extensions,/conf/geopackage-gi/extensions]]
+[[conf_geopackage-gi_extensions,/conf/core/extensions]]
 [abstract_test]
 ====
 [%metadata]
-identifier:: /conf/geopackage-gi/extensions
-target:: /req/geopackage-gi/extensions
+identifier:: /conf/core/extensions
+target:: /req/core/extensions
 test-purpose:: Verify that the GeoPackage properly declare extended tables
 test-method::
 +
@@ -34,5 +32,3 @@ test-method::
 - assert that all entries listed in <<extension_table>> are present, including an entry for every user data table making use of these extensions.
 --
 ====
-
-////

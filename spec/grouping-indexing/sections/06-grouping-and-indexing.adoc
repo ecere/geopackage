@@ -1,6 +1,21 @@
 [[GroupingAndIndexingClause]]
 == Grouping and Indexing Extension
 
+[[rc_grouing_and_indexing]]
+[requirements_class]
+====
+[%metadata]
+identifier:: https://www.opengis.net/spec/geopackage-gi/1.0/req/core
+subject:: Data Product
+inherit:: https://www.geopackage.org/spec140/#tiles
+inherit:: https://www.geopackage.org/spec140/#extension_mechanism
+inherit:: https://www.opengis.net/spec/geopackage-2dtms/1.0/req/core
+requirement:: /req/core/package-index
+requirement:: /req/core/packages-table
+requirement:: /req/core/file-names
+requirement:: /req/core/directory-structure
+====
+
 === GeoPackage deterministic hierarchical tiles grouping & indexing extension
 
 ==== Description
@@ -51,9 +66,20 @@ CREATE TABLE gpkgext_hierarchical_gpkg_packages(
 ////
 
 
-==== Fields
+==== Description of packages and data layers
 
 ===== `gpkgext_hierarchical_gpkg_index` table
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/geopackage-gi/package-index
+description:: For mapping data layers to packages in a primary GeoPackage
+part:: The primary GeoPackage SHALL map all data layers to the packages containing them as an entry in a `gpkgext_hierarchical_gpkg_index` table with the following columns:
+* `table_name`, entry in the `gpkg_contents` table of the data layers of each; The `gpkgext_contents` will exist in the primary GeoPackage, but the individual tiles table will be dummy tables with no actual entry if the data is stored externally in the GeoPackages grouping tiles
+* `package_id`, reference to the package entry in the `gpkgext_hierarchical_gpkg_packages` table in which this data layer is stored
+* `max_level`, the maximum level for this data layer across all sub-packages; this may be greater than the associated package `max_level` to allow for insets, in which case the insets will be stored in the package of the most detailed zoom level
+====
 
 [#table_gpkgext_hierarchical_gpkg_index,reftext='{table-caption} {counter:table-num}']
 .Description of `gpkgext_hierarchical_gpkg_index`
@@ -79,8 +105,21 @@ perform better, so we need to consider this.
 
 ===== `gpkgext_hierarchical_gpkg_packages` table
 
+[requirement]
+====
+[%metadata]
+identifier:: /req/geopackage-gi/packages-table
+description:: For describing each package in the primary GeoPackage
+part:: The primary GeoPackage SHALL describe each package as an entry in a `gpkgext_hierarchical_gpkg_packages` table with the following columns:
+* `id`, an integer primary key for this package entry referenced by the `gpkgext_hierarchical_gpkg_index` table
+* `name`, the name of the package in which this data layer is stored, `NULL` if things are stored in this primary GeoPackage file (only valid if `levelGroupingCount` is also `NULL`)
+* `level_grouping_count`, the number of levels to group together, starting from `max_level` down towards 0; `NULL` means the package is stored in a single GeoPackage file
+* `max_grouping_level`, maximum level used for building tile pyramids (and thus GeoPackage file names when `levelGroupingCount` is not `NULL`)
+* `tms_id`, the TileMatrixSet entry from the https://docs.ogc.org/DRAFTS/26-023.html[2DTMS GeoPackage extension].
+====
+
 [#table_gpkgext_hierarchical_gpkg_packages,reftext='{table-caption} {counter:table-num}']
-.Description of gpkgext_hierarchical_gpkg_packages
+.Description of `gpkgext_hierarchical_gpkg_packages`
 [options="header"]
 |===
 | Name | Description
@@ -88,7 +127,7 @@ perform better, so we need to consider this.
 | `name`| name of the package in which this data layer is stored, `NULL` if things are stored in this primary GeoPackage file (only valid if `levelGroupingCount` is also `NULL`)
 | `level_grouping_count`| number of levels to group together, starting from `max_level` down towards 0; `NULL` means the package is stored in a single GeoPackage file
 | `max_grouping_level`| maximum level used for building tile pyramids (and thus GeoPackage file names when `levelGroupingCount` is not `NULL`)
-| `tms_id`| The TileMatrixSet entry from https://gitlab.com/imagemattersllc/ogc-vtp2/-/blob/master/extensions/14-tile-matrix-set.adoc[2DTMS GeoPackage extension].
+| `tms_id`| the TileMatrixSet entry from the https://docs.ogc.org/DRAFTS/26-023.html[2DTMS GeoPackage extension].
 |===
 
 NOTE: This extension requires the use of a TileMatrixSet using integer tile matrix identifiers, and where each tile is fully contained within the parent (level-1) tile matrix tile, such as a quad-tree, or semi-quad tree as used in the _GNOSIS Global Grid_ and _CDB 1 GlobalGrid_ variable width Tile Matrix Sets. _WorldCRS84Quad_, _WebMercatorQuad_, _WorldMercatorWGS84Quad_, _ISEA9R_, _rHEALPix_ would also all work, but not _GlobalCRS84Scale_ or _GlobalCRS84Pixel_ where children and parent tiles do not align.
