@@ -16,9 +16,9 @@ requirement:: /req/core/file-names
 requirement:: /req/core/directory-structure
 ====
 
-=== GeoPackage deterministic hierarchical tiles grouping & indexing extension
+== GeoPackage deterministic hierarchical tiles grouping & indexing extension
 
-==== Description
+=== Description
 
 This extension defines the ability to optionally split data layers stored in GeoPackages using a deterministic approach to organize the directory structure and naming individual GeoPackage files.
 
@@ -31,19 +31,19 @@ The simplest option is storing everything in a single GeoPackage. Data layers ca
 
 Conforming clients can open the primary GeoPackage and access the data regardless of which particular configuration of this extension is used, to suit a variety of datasets and use cases ranging from global high resolution repository spanning petabytes of data to small local extracts for mobile use. Regardless of the configuration option used, a client can easily find a particular data layer, without the need to look up an index for a particular area.
 
-==== Dependencies
+=== Dependencies
 
 This extension depends on the https://github.com/ecere/geopackage/blob/main/spec/2dtms/26-ZZZ.adoc[2D Tile Matrix Set extension].
 
 https://www.opengis.net/is/geopackage-2dtms/1.0
 
-==== Definitions
+=== Definitions
 
-- A _*level*_ corresponds to a 2DTMS Tile Matrix
-- A _*package*_ represents one or more data layers packaged together, either as a single GeoPackage, or in multiple GeoPackages grouping a partial tile pyramid of zoom levels (from a minimum to a maximum level), or of untiled vector data (in Features tables).
-- A _*GeoDataClass*_ (previously called a _Stylable Layer Set_) is a URI which has an associated schema (consisting of specific data layers, each with a schema defining specific fields and associated semantics); can be any type of geospatial data (coverage, vector features, 3D models...)
+- A *_level_* corresponds to a 2DTMS Tile Matrix
+- A *_package_* represents one or more data layers packaged together, either as a single GeoPackage, or in multiple GeoPackages grouping a partial tile pyramid of zoom levels (from a minimum to a maximum level), or of untiled vector data (in Features tables).
+- A *_GeoDataClass_* (previously called a _Stylable Layer Set_) is a URI which has an associated schema (consisting of specific data layers, each with a schema defining specific fields and associated semantics); can be any type of geospatial data (coverage, vector features, 3D models...)
 
-==== SQL Create statements
+=== SQL Create statements
 
 ```SQL
 CREATE TABLE gpkgext_hierarchical_gpkg_index(
@@ -66,9 +66,9 @@ CREATE TABLE gpkgext_hierarchical_gpkg_packages(
 ////
 
 
-==== Description of packages and data layers
+=== Description of packages and data layers
 
-===== `gpkgext_hierarchical_gpkg_index` table
+==== `gpkgext_hierarchical_gpkg_index` table
 
 [requirement]
 ====
@@ -103,7 +103,7 @@ table, so this would require individual GeoDataClasses per vector layer. Loading
 perform better, so we need to consider this.
 ////
 
-===== `gpkgext_hierarchical_gpkg_packages` table
+==== `gpkgext_hierarchical_gpkg_packages` table
 
 [requirement]
 ====
@@ -132,28 +132,38 @@ part:: The primary GeoPackage SHALL describe each package as an entry in a `gpkg
 
 NOTE: This extension requires the use of a TileMatrixSet using integer tile matrix identifiers, and where each tile is fully contained within the parent (level-1) tile matrix tile, such as a quad-tree, or semi-quad tree as used in the _GNOSIS Global Grid_ and _CDB 1 GlobalGrid_ variable width Tile Matrix Sets. _WorldCRS84Quad_, _WebMercatorQuad_, _WorldMercatorWGS84Quad_, _ISEA9R_, _rHEALPix_ would also all work, but not _GlobalCRS84Scale_ or _GlobalCRS84Pixel_ where children and parent tiles do not align.
 
-==== Sub-GeoPackages naming and directory structures
+=== Sub-GeoPackages naming and directory structures
 
 The file and directory naming are deterministic and simple to compute algorithmically, without having to lookup any index to discover arbitrarily named files.
 
-===== File names
+==== File names
 
-The GeoPackage filenames follow the following template based on the package name, the coarsest tile in that package forming the basis of the partial tile pyramid for that GeoPackage, along with the level of the finest level tile that would normally be placed into this GeoPackage (excluding insets):
+The GeoPackage filenames follow the following template based on the package name, the coarsest tile in that package forming the basis of the partial tile pyramid for that
+GeoPackage, along with the level of the finest level tile that would normally be placed into this GeoPackage (excluding insets):
 
 `{packageName}_L{gpkgMinLevel}_R{gpkgTileRow}_C{gpkgTileCol}_L{gpkgMaxLevel}.gpkg`
 
-where:
+An example based on the GNOSIS Global Grid: **Imagery_L12_R2607_C2858_L18.gpkg**
+
+[requirement]
+====
+[%metadata]
+identifier:: /req/geopackage-gi/filenames
+description:: For naming GeoPackage files grouping tiled content referenced by the primary GeoPackage
+part:: The file names of GeoPackage files grouping tiled content referenced by the primary GeoPackage SHALL follow the template
+`{packageName}_L{gpkgMinLevel}_R{gpkgTileRow}_C{gpkgTileCol}_L{gpkgMaxLevel}.gpkg` where:
 - `{packageName}` refers to the package name as specified in the `name` field of the `gpkgext_hierarchical_gpkg_packages` table,
 - `{gpkgMinLevel}` refers to the lowest level tile included within the grouping inside the GeoPackage,
 - `{gpkgTileRow}` refers to the row of that lowest level tile (based on the TileMatrixSet for that package, for both CDB 1 and GNOSIS Global Grids they are counted from top/North to bottom/South),
 - `{gpkgTileCol}` refers to the column of that lowest level tile (based on the TileMatrixSet for that package, from left/West to right/East), and
-- `{gpkgMaxLevel}` refers to the maximum level tile normally included within the grouping inside this GeoPackage (excluding insets). For the deepest sub-directory, this will be the same value as the package `maxLevel` specified in the index.
+- `{gpkgMaxLevel}` refers to the maximum level tile normally included within the grouping inside this GeoPackage (excluding insets).
+For the deepest sub-directory, this will be the same value as the package `max_level` specified in the index.
+====
 
-An example based on the GNOSIS Global Grid: **Imagery_L12_R2607_C2858_L18.gpkg**
+==== Directory structure
 
-===== Directory structure
-
-The directory organization, which limits the number of GeoPackage files and sub-directories that could exist within a single directory based on a particular level grouping count, follows the template:
+The directory organization, which limits the number of GeoPackage files and sub-directories that could exist within a single directory based on a particular level
+grouping count, follows the template:
 
 ```
 {packageName}/
@@ -162,15 +172,34 @@ The directory organization, which limits the number of GeoPackage files and sub-
          ...
 ```
 
-where:
-- `{packageName}` refers to the package name as specified in the `name` field of the `gpkgext_hierarchical_gpkg_packages` table,
-- `{parentMinLevel}` refers to the level (tile matrix) of the parent tile that contains all of content within this directory and its sub-directories,
-- `{parentTileRow}` refers to the row of the parent tile that contains all of content within this directory and its sub-directories, and
-- `{parentTileCol}` refers to the column of the parent tile that contains all of content within this directory and its sub-directories.
+[requirement]
+====
+[%metadata]
+identifier:: /req/geopackage-gi/directories
+description:: For naming organize GeoPackage files grouping tiled content into directories
+part::
++
+--
+The location of GeoPackage files grouping tiled content within a directory structure SHALL follow the template
+[source]
+----
+{packageName}/
+   L{parentMinLevel}_R{parentTileRow}_C{parentTileCol}/
+      L{parentMinLevel}_R{parentTileRow}_C{parentTileCol}/
+         ...
+----
+(relative to the primary geopackage location) where: +
+
+* `{packageName}` refers to the package name as specified in the `name` field of the `gpkgext_hierarchical_gpkg_packages` table,
+* `{parentMinLevel}` refers to the level (tile matrix) of the parent tile that contains all of content within this directory and its sub-directories,
+* `{parentTileRow}` refers to the row of the parent tile that contains all of content within this directory and its sub-directories, and
+* `{parentTileCol}` refers to the column of the parent tile that contains all of content within this directory and its sub-directories.
+--
+====
 
 For example, based on the GNOSIS Global Grid, the file **Imagery_L12_R2607_C2858_L18.gpkg** would exist in the directory named **Imagery/L0_R0_C0/L5_R20_C22/**.
 
-===== Example
+==== Example
 
 Full directory listing example, based a _GNOSIS Global Grid_ `tms_id`, an _Imagery_ package `name`, and a package `max_grouping_level` of 18:
 
@@ -214,27 +243,28 @@ SanDiego.gpkg
 ```
 
 In the above example:
-- the _Imagery_ package is stored within an `Imagery` sub-directory at the same level as the primary GeoPackage (`SanDiego.gpkg`),
-- a single GeoPackage (`Imagery_L0_R0_C0_L4.gpkg`, less than 1 mb in this example) containing levels 0-4 is found directly within that `Imagery` sub-directory,
-- a single GeoPackage (`Imagery_L5_R20_C22_L11.gpkg`, less than 1 mb in this example) containing levels 5-11 is found within the `Imagery/L0_R0_C0/` sub-directory for the area fully contained within the single parent level 4 tile of that GeoPackage above (`Imagery_L0_R0_C0_L4.gpkg`),
-- 30 GeoPackages (each between 86 and 232 mb in this example) containing levels 12-18 are found within the `Imagery/L0_R0_C0/L5_R20_C22/` sub-directory for the area fully contained within the single parent level 11 tile of that GeoPackage above (`Imagery_L5_R20_C22_L11.gpkg`).
 
-===== For even more deterministic naming
+* the _Imagery_ package is stored within an `Imagery` sub-directory at the same level as the primary GeoPackage (`SanDiego.gpkg`),
+* a single GeoPackage (`Imagery_L0_R0_C0_L4.gpkg`, less than 1 mb in this example) containing levels 0-4 is found directly within that `Imagery` sub-directory,
+* a single GeoPackage (`Imagery_L5_R20_C22_L11.gpkg`, less than 1 mb in this example) containing levels 5-11 is found within the `Imagery/L0_R0_C0/` sub-directory for the area fully contained within the single parent level 4 tile of that GeoPackage above (`Imagery_L0_R0_C0_L4.gpkg`),
+* 30 GeoPackages (each between 86 and 232 mb in this example) containing levels 12-18 are found within the `Imagery/L0_R0_C0/L5_R20_C22/` sub-directory for the area fully contained within the single parent level 11 tile of that GeoPackage above (`Imagery_L5_R20_C22_L11.gpkg`).
+
+==== For even more deterministic naming
 
 To facilitate extraction from a large global high-resolution dataset and easily merge these extracted sub-datasets as well as the ability to augment these base datasets with additional more detailed insets, without repackaging the entire dataset, the following solutions are proposed:
 
 * The publisher of a large repository of data could define a profile pre-establishing the fixed package name, level grouping count and maximum package level for a specific GeoDataClass.
 * When inset data is added to a dataset, these could go beyond the regular maximum level specified for the package (package `max_grouping_level`). As such these inset tiles are always grouped together with the tiles of the regular maximum level.
 
-==== Profiling this extension
+=== Profiling this extension
 
 This extension addresses the use cases of splitting large datasets into multiple GeoPackages for efficient access using deterministic naming.
 Some example datasets where this would be convenient:
 
-- https://www.ogc.org/standards/cdb/[OGC CDB] (a model and structure for a virtual detailed representation of the earth),
-- OrdnanceSurvey Master Map,
-- OpenStreetMap Planet OSM,
-- ESA sentinel-2
+* https://www.ogc.org/standards/cdb/[OGC CDB] (a model and structure for a virtual detailed representation of the earth),
+* OrdnanceSurvey Master Map,
+* OpenStreetMap Planet OSM,
+* ESA sentinel-2
 
 This indexing mechanism allows to describe multiple configurations:
 
@@ -252,9 +282,9 @@ For users at the edge and smaller datasets over a small area, storing everything
 
 For Modeling and Simulation uses, as well as data repository cases, the Level grouping functionality can be used, and related data layers can be organized as a single package.  This involves storing a region of the world at a set of zoom levels, or levels of detail, within a single GeoPackage, with a specified file and directory naming scheme.  This approach would allow for faster access to data at specified areas and zoom levels.  This approach would also lend itself to concurrent access and editing for data repository maintainers.
 
-==== Example Datasets and primary GeoPackages
+=== Example Datasets and primary GeoPackages
 
-===== Separate packages for each data layer
+==== Separate packages for each data layer
 
 ////
 https://portal.ogc.org/index.php?m=projects&a=view&project_id=466&tab=2&artifact_id=95320[Data folder on the portal]
@@ -332,7 +362,7 @@ This should correctly index the data following the same
 https://github.com/sofwerx/cdb2-eng-report/blob/master/11-tiling-coverages.adoc#proposed-levels-of-detail-grouping[GeoPackage file naming conventions from the CDB X Techsprint]
 summarized above.
 
-===== One package grouping all data layers together by 5 tile levels
+==== One package grouping all data layers together by 5 tile levels
 
 https://data.ogc.org/2020/11/SanDiego.7z[7-zip file of directories]
 
@@ -379,7 +409,7 @@ and a `gpkgext_hierarchical_gpkg_packages` table that looks like this:
 |   1 | SanDiego       | 5                    | 18        | 1 (GGG)
 |===
 
-===== Single GeoPackage with everything
+==== Single GeoPackage with everything
 
 https://data.ogc.org/2020/11/SanDiego.gpkg.7z[GeoPackage file]
 
